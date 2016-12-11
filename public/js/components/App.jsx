@@ -6,6 +6,7 @@ import Signup from './Signup.jsx'
 import Trivia from './Trivia.jsx'
 import NotFound from './NotFound.jsx'
 import Rooms from './Rooms.jsx'
+import uuid from 'uuid'
 
 
 
