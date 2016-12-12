@@ -3,8 +3,7 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink
 import Signup from './Signup.jsx';
 import Rooms from './Rooms.jsx';
 import uuid from 'uuid';
-import { connect } from 'react-redux';
-import Global from 'react-global';
+import axios from 'axios';
 
 
 class Signin extends Component {
@@ -31,6 +30,14 @@ class Signin extends Component {
 
   handleSignInPlayer() {
     console.log('username', this.state.username, 'password', this.state.password, 'id', this.state.userid, 'newPlayer', this.state.newPlayer);
+    axios.post('/signin', 
+    {
+      name: this.state.username, 
+      password: this.state.password
+    }
+      ).then((response) => {
+        console.log(response);
+    });
     this.props.history.push('/rooms');
   };
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 import uuid from 'uuid';
 import { connect } from 'react-redux';
-import Global from 'react-global';
 
 
 class Signup extends Component {
@@ -24,6 +23,14 @@ class Signup extends Component {
 
   createNewPlayer(event) {
     console.log('username', this.state.username, 'password', this.state.password, 'id', this.state.userid);
+    axios.post('/signup', 
+    {
+      name: this.state.username, 
+      password: this.state.password
+    }
+      ).then((response) => {
+        console.log(response);
+    });
     this.props.history.push('/rooms');
   };
 

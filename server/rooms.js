@@ -6,6 +6,9 @@
 * getRoom
 * getRooms
 */
+var Promise = require('bluebird')
+var http = require('http')
+var request = require('request')
 
 var Rooms = function() {
   var roomStore = {};
@@ -23,17 +26,27 @@ var Rooms = function() {
     } else {
       var players = {}
       var numPlayers = Object.keys(players).length
-      var trivia = [];
+      trivia = ['bop'];
       var currentTrivia = null;
       this.destroy = function() {
         delete roomStore[name];
       }
       this.addTrivia = function(trivia) {
-        if(Array.isArray(trivia)) {        
-          trivia = trivia.concat(trivia);
-        } else {
-          throw new Error('add trivia requires array argument');
-        }
+        var body = []
+        var ctx = this;
+        return new Promise(function(resolve, reject) {
+          request.bind(ctx);
+          request
+            .get('https://www.opentdb.com/api.php?amount=10')
+            .on('data', function(chunk) {
+              body.push(chunk);
+            })
+            .on('end', function() {
+              body = JSON.parse(Buffer.concat(body).toString());
+              ctx.setTrivia(body.results);
+              resolve();
+            })
+        })
       }
       this.newTrivia = function() {
         currentTrivia = trivia.pop();
@@ -41,6 +54,17 @@ var Rooms = function() {
       }
       this.getTrivia = function() {
         return currentTrivia;
+      }
+
+      this.setTrivia = function(arr) {
+        console.log(trivia, 'hey')
+        if(Array.isArray(arr)) {
+          arr.forEach(entry => {
+            trivia.push(entry);
+          });
+        }
+        // console.log(trivia);
+        console.log('bop', this.getTrivia());
       }
 
       this.getAllTrivia = function() {
@@ -87,19 +111,17 @@ var Rooms = function() {
   }
   //no return value, requires at least one string input, second is optional
   this.makeRoom = function(room, player) {
-    console.log('room', room, 'player', player)
       if(!((typeof room) === 'string' && room.length > 1)) {
-        console.log(room, room.length);
         console.log('must have a room name');
       } else if(roomStore[room]) {
         console.log('that room exists')
       } else {
         roomStore[room] = new Room(room)
-        console.log(roomStore);
         if(Object.keys(roomStore[room]).length < 1) {
           console.log('unkown error making room');
         } else {
           if((typeof player) === 'string' && player.length > 0){
+            console.log('zoopy')
             roomStore[room].addPlayer(player);
           }
         }
@@ -113,8 +135,8 @@ var Rooms = function() {
   this.getRooms = function() {
     var arr = [];
     console.log(roomStore);
-    for(var roomName in roomStore) {
-      arr.push({roomname: roomName, players: roomStore[roomName].getPlayers()})
+    for (var roomName in roomStore) {
+      arr.push({roomname: roomName, players: roomStore[roomName].getPlayers()});
     }
     return arr;
   }
@@ -129,4 +151,11 @@ module.exports = new Rooms();
 // myRoom.incrementScore('john');
 // console.log(myRoom.getPlayers())
 // console.log(myRoom.getPlayer('john'))
-// console.log(store.getRoom('jigga').getPlayers());
+// console.log(store.getRooms());
+// console.log(myRoom.getAllTrivia(), 'my')
+// myRoom.addTrivia().then(function() {
+//   console.log(myRoom.getAllTrivia(), 'grp')
+// })
+
+
+

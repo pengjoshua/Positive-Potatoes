@@ -27,7 +27,7 @@ class RoomListItem extends Component {
       }
     } className={"col-sm-offset-5 col-sm-6 " + this.getClassNames()}>{this.props.room.roomname}
         <ul className="list-group list-unstyled">
-          {this.props.room.players.map(player => { return (<li className="list-group-item list-group-item-action">{player}</li>) })}
+          {this.props.room.players.map(player => { return (<li className="list-group-item list-group-item-action">{player.name}</li>) })}
         </ul>
       </li>
     );

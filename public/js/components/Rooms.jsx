@@ -2,34 +2,37 @@ import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 import Signup from './Signup.jsx';
 import RoomList from './RoomList.jsx';
-import Global from 'react-global';
+import axios from 'axios';
 
 
 class Rooms extends Component {
   constructor(props) {
     super(props);
-    // rooms = [{ roomname: 'lobby': players: ['John', 'Jill'] }] 
     this.state = {
       date: new Date(),
-      // username: this.props.player.username,
-      username: 'Alexa',
-      // rooms: [],
-      rooms: [
-      {
-        roomname: 'lobby', players: ['Josh', 'Will']
-      },
-      {
-        roomname: 'newroom', players: ['Nick', 'Craig']
-      }],
+      username: 'Player1', // temporarily hardcoding in a player name, need redux to remember the username from signin/signup page
+      rooms: [],
+      // rooms: [
+      // {
+      //   roomname: 'lobby', players: [{ name: 'Josh', score: 123 }, { name: 'Will', score: 321 }]
+      // },
+      // {
+      //   roomname: 'newroom', players: [{ name: 'Nick', score: 222 }, { name: 'Craig', score: 333 }]
+      // }],
       newRoomname: '',
       selectedRoom: null,
+      waiting: false,
       currentPage: 'rooms'
     };
   };
 
   componentWillMount() {
-    // let player=this.props.sendPlayerInfo();
-    // console.log(player);
+    console.log(this.props);
+    axios.get('/rooms').then((response) => {
+      console.log('response.data', response.data);
+      let rooms = response.data;
+      this.setState({ rooms: rooms });
+    });
   }
 
   handleRoomnameInput(event) {
@@ -37,10 +40,11 @@ class Rooms extends Component {
     this.setState({ newRoomname: event.target.value });
   };
 
-  joinRoom() {
+  joinRoom() { //joinRoom needs to retrieve username from existing session or with redux, right now just using hardcoded this.state.username
     console.log(window);
     if (this.state.selectedRoom !== null) {
-      console.log(this.state.selectedRoom);
+      console.log('this.state.username', this.state.username);
+      console.log('this.state.selectedRoom', this.state.selectedRoom);
       let currentRooms = this.state.rooms;
       let selectedRoom = this.state.selectedRoom;
       currentRooms.forEach((room, i) => {
@@ -48,7 +52,12 @@ class Rooms extends Component {
           currentRooms[i].players.push(this.state.username);
         }
       });
-      this.setState({ rooms: currentRooms });
+      axios.post('/rooms/:' + selectedRoom.roomname, {
+        roomname: selectedRoom.roomname,
+        user: this.state.username
+      }).then((response) => {
+        this.setState({ rooms: currentRooms });
+    });
     }
   };
 
@@ -60,12 +69,19 @@ class Rooms extends Component {
     console.log('newRoom', newRoom);
     let currentRooms = this.state.rooms;
     currentRooms.push(newRoom);
+    axios.post('/rooms', {
+      roomname: this.state.newRoomname,
+      user: this.state.username
+    }).then((response) => {
+        console.log(response);
+    });
     this.setState({ rooms: currentRooms });
     console.log('rooms', this.state.rooms);
   };
 
   signOutPlayer() {
     console.log('sign out user', this.state.username);
+    this.props.history.push('/signin'); //redirect back to signin page
   };
 
   render() {
