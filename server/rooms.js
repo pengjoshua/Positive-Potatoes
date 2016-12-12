@@ -1,4 +1,11 @@
-
+/*
+* rooms class for dynamically storing rooms
+*
+* functions:
+* makeRoom
+* getRoom
+* getRooms
+*/
 
 var Rooms = function() {
   var roomStore = {};
@@ -6,6 +13,9 @@ var Rooms = function() {
   * individual room class, requires a name
   * if a player is removed and the room becomes
   * empty it is destroyed
+  *
+  * stores a room's individual trivia retrieved elsewhere
+  * 
   */
   var Room = function(name) {
     if(!name){
@@ -66,7 +76,7 @@ var Rooms = function() {
       }
     }
   }
-
+  //no return value, requires at least one string input, second is optional
   this.makeRoom = function(room, player) {
       if(!((typeof room) === 'string' && room.length > 1)) {
         console.log('must have a room name');
@@ -84,11 +94,11 @@ var Rooms = function() {
         }
       }
   }
-
+  //returns undefined or room object
   this.getRoom = function(room) {
     return roomStore[room];
   }
-
+  //returns array of room objects(may be empty)
   this.getRooms = function() {
     var arr = [];
     for(var key in roomStore) {
