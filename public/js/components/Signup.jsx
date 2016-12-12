@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 import uuid from 'uuid';
+import { connect } from 'react-redux';
+import Global from 'react-global';
 
 
 class Signup extends Component {
@@ -10,13 +12,19 @@ class Signup extends Component {
       date: new Date(),
       userid: uuid.v4(),
       username: '',
-      password: ''
+      password: '',
+      currentPage: 'signup'
     };
   };
 
+  sendPlayerInfo() {
+    let playerInfo = JSON.parse(JSON.stringify(this.state));
+    return playerInfo;
+  }
+
   createNewPlayer(event) {
     console.log('username', this.state.username, 'password', this.state.password, 'id', this.state.userid);
-    Router.get().transitionTo('/rooms');
+    this.props.history.push('/rooms');
   };
 
   handleUsernameInput(event) {
@@ -57,3 +65,11 @@ class Signup extends Component {
 };
 
 export default Signup;
+
+// function mapStateToProps(state) {
+//   return {
+//     player: state
+//   };
+// };
+
+// export default connect(mapStateToProps)(Signup);

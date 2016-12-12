@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 import Signup from './Signup.jsx';
 import RoomList from './RoomList.jsx';
+import Global from 'react-global';
 
 
 class Rooms extends Component {
@@ -21,9 +22,15 @@ class Rooms extends Component {
         roomname: 'newroom', players: ['Nick', 'Craig']
       }],
       newRoomname: '',
-      selectedRoom: null
+      selectedRoom: null,
+      currentPage: 'rooms'
     };
   };
+
+  componentWillMount() {
+    // let player=this.props.sendPlayerInfo();
+    // console.log(player);
+  }
 
   handleRoomnameInput(event) {
     console.log('roomname-input', this.state.newRoomname);
@@ -31,6 +38,7 @@ class Rooms extends Component {
   };
 
   joinRoom() {
+    console.log(window);
     if (this.state.selectedRoom !== null) {
       console.log(this.state.selectedRoom);
       let currentRooms = this.state.rooms;
@@ -66,7 +74,7 @@ class Rooms extends Component {
         <div className="form-group">
           <label htmlFor="inputEmail3" className="col-sm-2 control-label">Room</label>
           <div className="col-sm-5">
-            <input type="text" className="form-control" id="inputEmail3" placeholder="New Room" onChange={this.handleRoomnameInput.bind(this)} required/>
+            <input type="text" className="form-control" id="inputEmail3" placeholder="New Room" onChange={this.handleRoomnameInput.bind(this)} />
           </div>
         </div>
         <div className="form-group">
