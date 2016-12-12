@@ -68,24 +68,21 @@ var Rooms = function() {
   }
 
   this.makeRoom = function(room, player) {
-    return new Promise(function(resolve, reject) {
       if(!((typeof room) === 'string' && room.length > 1)) {
-        reject('must have a room name');
+        console.log('must have a room name');
       } else if(roomStore[room]) {
-        reject('that room exists')
+        console.log('that room exists')
       } else {
         roomStore[room] = new Room(room)
         if(Object.keys(roomStore[room]).length < 1) {
-          reject('unkown error making room');
+          console.log('unkown error making room');
         } else {
           if((typeof player) === 'string' && player.length > 0){
             console.log('zoopy')
             roomStore[room].addPlayer(player);
           }
-          resolve(roomStore[room])
         }
       }
-    })
   }
 
   this.getRoom = function(room) {
@@ -93,13 +90,11 @@ var Rooms = function() {
   }
 
   this.getRooms = function() {
-    return new Promise(function(resolve, reject) {
-      var arr = [];
-      for(var key in roomStore) {
-        arr.push({key: roomStore[key]})
-      }
-      resolve(arr);
-    })
+    var arr = [];
+    for(var key in roomStore) {
+      arr.push({key: roomStore[key]})
+    }
+    return arr;
   }
 }
 
@@ -112,3 +107,5 @@ module.exports = new Rooms();
 // myRoom.incrementScore('john');
 // console.log(myRoom.getPlayers())
 // console.log(myRoom.getPlayer('john'))
+// myRoom.destroy();
+// console.log(store.getRooms());
