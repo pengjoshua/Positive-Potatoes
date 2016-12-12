@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 import Signup from './Signup.jsx';
+import uuid from 'uuid'
 
 
 class Signin extends Component {
@@ -8,6 +9,7 @@ class Signin extends Component {
     super(props);
     this.state = {
       date: new Date(),
+      userid: uuid.v4(),
       username: '',
       password: '',
       newPlayer: false
@@ -19,7 +21,8 @@ class Signin extends Component {
   };
 
   handleSignInPlayer() {
-    console.log('username', this.state.username, 'password', this.state.password, 'newPlayer', this.state.newPlayer);
+    console.log('username', this.state.username, 'password', this.state.password, 'id', this.state.userid, 'newPlayer', this.state.newPlayer);
+    Router.get().transitionTo('/rooms');
   };
 
   handleUsernameInput(event) {

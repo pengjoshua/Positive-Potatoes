@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <Router history={hashHistory} >
         <Route path='/' component={Container} >
-          <IndexRoute component={Signin} />
+          <IndexRoute component={Rooms} />
           <Route path='/signin' component={Signin} />
           <Route path='/signup' component={Signup} />
           <Route path='/rooms' component={Rooms} />

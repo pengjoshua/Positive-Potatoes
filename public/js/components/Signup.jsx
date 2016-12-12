@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
+import uuid from 'uuid';
 
 
 class Signup extends Component {
@@ -7,13 +8,15 @@ class Signup extends Component {
     super(props);
     this.state = {
       date: new Date(),
+      userid: uuid.v4(),
       username: '',
       password: ''
     };
   };
 
   createNewPlayer(event) {
-    console.log('username', this.state.username, 'password', this.state.password);
+    console.log('username', this.state.username, 'password', this.state.password, 'id', this.state.userid);
+    Router.get().transitionTo('/rooms');
   };
 
   handleUsernameInput(event) {
