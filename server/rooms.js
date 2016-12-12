@@ -72,7 +72,24 @@ var Rooms = function() {
       }
     })
   }
-}
 
-var store = new Rooms()
-console.log(store.makeRoom('bubba'))
+  this.getRoom = function(room) {
+    return new Promise(function(resolve, reject) {
+      if(roomStore[room]) {
+        resolve(roomStore[room])
+      } else {
+        reject('no such room');
+      }
+    })
+  }
+
+  this.getRooms = function() {
+    return new Promise(function(resolve, reject) {
+      var arr = [];
+      for(var key in roomStore) {
+        arr.push({key: roomStore[key]})
+      }
+      resolve(arr);
+    })
+  }
+}
