@@ -14,10 +14,10 @@ class Rooms extends Component {
       rooms: [],
       // rooms: [
       // {
-      //   roomname: 'lobby', players: [{ name: 'Josh', score: 123 }, { name: 'Will', score: 321 }]
+      //   roomname: 'lobby', scoreboard: [{ name: 'Josh', score: 123 }, { name: 'Will', score: 321 }]
       // },
       // {
-      //   roomname: 'newroom', players: [{ name: 'Nick', score: 222 }, { name: 'Craig', score: 333 }]
+      //   roomname: 'newroom', scoreboard: [{ name: 'Nick', score: 222 }, { name: 'Craig', score: 333 }]
       // }],
       newRoomname: '',
       selectedRoom: null,
