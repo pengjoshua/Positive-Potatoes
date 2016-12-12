@@ -28,13 +28,20 @@ var Rooms = function() {
         return this.trivia.pop();
       }
       this.addPlayer = function(player) {
-        if(this[player] === undefined) {
+        if(players[player] === undefined) {
           players[player] = 0;
           numPlayers = Object.keys(players).length;
         } else {
           console.log('that player exists');
         }
-        return this;
+      }
+      this.incrementScore = function(player) {
+        if(players[player] !== undefined) {
+          players[player]++;
+          return players[player];
+        } else {
+          console.log('no such player')
+        }
       }
       this.removePlayer =  function(player, persist) {
         delete players[player];
@@ -42,6 +49,13 @@ var Rooms = function() {
           this.destroy();
         }
         return this;
+      }
+      this.getPlayer = function(player) {
+        if(players[player] === undefined) {
+          return null;
+        } else {
+          return {name: player, score: players[player]};
+        }
       }
       this.getPlayers = function() {
         var arr = []
@@ -55,7 +69,7 @@ var Rooms = function() {
 
   this.makeRoom = function(room, player) {
     return new Promise(function(resolve, reject) {
-      if((typeof room) !== 'string' || room.length < 1) {
+      if(!((typeof room) === 'string' && room.length > 1)) {
         reject('must have a room name');
       } else if(roomStore[room]) {
         reject('that room exists')
@@ -64,7 +78,8 @@ var Rooms = function() {
         if(Object.keys(roomStore[room]).length < 1) {
           reject('unkown error making room');
         } else {
-          if((typeof player) !== 'string' || player.length < 1){
+          if((typeof player) === 'string' && player.length > 0){
+            console.log('zoopy')
             roomStore[room].addPlayer(player);
           }
           resolve(roomStore[room])
@@ -74,13 +89,7 @@ var Rooms = function() {
   }
 
   this.getRoom = function(room) {
-    return new Promise(function(resolve, reject) {
-      if(roomStore[room]) {
-        resolve(roomStore[room])
-      } else {
-        reject('no such room');
-      }
-    })
+    return roomStore[room];
   }
 
   this.getRooms = function() {
@@ -93,3 +102,13 @@ var Rooms = function() {
     })
   }
 }
+
+module.exports = new Rooms();
+
+// var store = new Rooms();
+// store.makeRoom('jigga')
+// var myRoom = store.getRoom('jigga')
+// myRoom.addPlayer('john')
+// myRoom.incrementScore('john');
+// console.log(myRoom.getPlayers())
+// console.log(myRoom.getPlayer('john'))
