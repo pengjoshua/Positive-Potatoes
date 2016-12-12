@@ -52,5 +52,27 @@ var Rooms = function() {
       }
     }
   }
+
+  this.makeRoom = function(room, player) {
+    return new Promise(function(resolve, reject) {
+      if((typeof room) !== 'string' || room.length < 1) {
+        reject('must have a room name');
+      } else if(roomStore[room]) {
+        reject('that room exists')
+      } else {
+        roomStore[room] = new Room(room)
+        if(Object.keys(roomStore[room]).length < 1) {
+          reject('unkown error making room');
+        } else {
+          if((typeof player) !== 'string' || player.length < 1){
+            roomStore[room].addPlayer(player);
+          }
+          resolve(roomStore[room])
+        }
+      }
+    })
+  }
 }
 
+var store = new Rooms()
+console.log(store.makeRoom('bubba'))
