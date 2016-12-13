@@ -4,9 +4,9 @@
 
 ## Team
 
-  - Nick Partridge: teamMember
-  - Will Powelson: teamMember
-  - Craig Dearden, Joshua Peng: teamMember, teamMember
+  - Product Owner: Nick Partridge
+  - Scrum Master: Will Powelson
+  - Development Team Members: Craig Dearden, Joshua Peng
 
 ## Table of Contents
 
